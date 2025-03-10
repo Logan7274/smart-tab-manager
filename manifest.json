@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "Smart Tab Manager",
+    "version": "1.0",
+    "description": "An intelligent tab manager that helps you organize and manage your browser tabs efficiently",
+    "icons": {
+        "48": "Leonardo_Phoenix_10_A_minimalist_logo_for_a_Firefox_browser_ex_3(1).jpg",
+        "96": "Leonardo_Phoenix_10_A_minimalist_logo_for_a_Firefox_browser_ex_3(1).jpg"
+    },
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_icon": "Leonardo_Phoenix_10_A_minimalist_logo_for_a_Firefox_browser_ex_3(1).jpg"
+    },
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    }
+} 

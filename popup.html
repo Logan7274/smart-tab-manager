@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tab Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="popup-container">
+        <div class="header-container">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search tabs...">
+            </div>
+            <select id="languageSelect" class="language-select">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+            </select>
+        </div>
+        
+        <div class="stats-container">
+            <div id="totalTabs">Total Tabs: 0</div>
+            <div id="memoryUsage">Memory Usage: ~0MB</div>
+        </div>
+
+        <div class="groups-container">
+            <div id="aiGroup" class="group">
+                <div class="group-header">
+                    <h3>AI Tools</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="socialGroup" class="group">
+                <div class="group-header">
+                    <h3>Social Media</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="toolsGroup" class="group">
+                <div class="group-header">
+                    <h3>Tools</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="newsGroup" class="group">
+                <div class="group-header">
+                    <h3>News</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="docsGroup" class="group">
+                <div class="group-header">
+                    <h3>Documents & Notes</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="learningGroup" class="group">
+                <div class="group-header">
+                    <h3>Learning</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="workGroup" class="group">
+                <div class="group-header">
+                    <h3>Work</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="entertainmentGroup" class="group">
+                <div class="group-header">
+                    <h3>Entertainment</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="shoppingGroup" class="group">
+                <div class="group-header">
+                    <h3>Shopping</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+
+            <div id="otherGroup" class="group">
+                <div class="group-header">
+                    <h3>Others</h3>
+                    <span class="tab-count">0</span>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="group-content"></div>
+            </div>
+        </div>
+
+        <div class="suggestions-container">
+            <h3>Suggestions</h3>
+            <div id="suggestions"></div>
+        </div>
+    </div>
+    <script src="nlp.min.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html> 
