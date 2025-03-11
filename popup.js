@@ -2,18 +2,32 @@
 const CATEGORY_RULES = {
     SEARCH: {
         domains: [
-            'google.com/search',
-            'google.com.tw/search',
-            'bing.com/search',
-            'search.yahoo.com',
+            'google.com',
+            'google.com.tw',
+            'bing.com',
+            'yahoo.com',
             'duckduckgo.com',
-            'baidu.com/s',
-            'yandex.com/search',
-            'ecosia.org/search',
+            'baidu.com',
+            'yandex.com',
+            'ecosia.org',
+            'brave.com',
             'search.brave.com',
-            'scholar.google.com',  // 學術搜索
-            'images.google.com',   // 圖片搜索
-            'maps.google.com/search'  // 地圖搜索
+            'scholar.google.com',
+            'images.google.com',
+            'maps.google.com',
+            'search.yahoo.com',
+            'tw.search.yahoo.com',
+            'hk.search.yahoo.com',
+            'search.aol.com',
+            'qwant.com',
+            'searx.me',
+            'startpage.com',
+            'swisscows.com',
+            'metager.org',
+            'mojeek.com',
+            'gibiru.com',
+            'searchencrypt.com',
+            'lukol.com'
         ],
         keywords: [
             'search',
@@ -622,6 +636,13 @@ function setupEventListeners() {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', async () => {
+    // 確保存在必要的容器
+    if (!document.querySelector('.groups-container')) {
+        const container = document.createElement('div');
+        container.className = 'groups-container';
+        document.body.appendChild(container);
+    }
+    
     await loadTabs();
     setupEventListeners();
     updateUI();
@@ -675,21 +696,33 @@ function determineCategory(tab) {
         url = new URL(tab.url);
         domain = url.hostname.toLowerCase();
         pathname = decodeURIComponent(url.pathname).toLowerCase();
-        const fullUrl = url.toString().toLowerCase();
-        const searchParams = url.searchParams;
         
-        // 搜索引擎域名匹配
-        if (domain.includes('google.com') || 
-            domain.includes('bing.com') || 
-            domain.includes('yahoo.com') || 
-            domain.includes('duckduckgo.com')) {
+        // 檢查是否為 Google 域名（包括所有國家/地區變體）
+        if (domain.match(/^(www\.)?google\.[a-z.]{2,6}$/)) {
+            // 排除特定的 Google 工具
+            if (domain.startsWith('translate.') ||
+                domain.startsWith('calendar.') ||
+                domain.startsWith('drive.') ||
+                domain.startsWith('docs.') ||
+                domain.startsWith('sheets.') ||
+                domain.startsWith('slides.')) {
+                return 'tools';
+            }
             return 'search';
+        }
+        
+        // 檢查是否為其他搜索引擎
+        const searchDomains = CATEGORY_RULES.SEARCH.domains;
+        for (const searchDomain of searchDomains) {
+            if (domain.includes(searchDomain)) {
+                return 'search';
+            }
         }
         
         // 特殊處理 YouTube 的內容
         if (domain.includes('youtube.com') || domain.includes('youtu.be')) {
             // 解码 URL 中的中文字符
-            const decodedUrl = decodeURIComponent(fullUrl);
+            const decodedUrl = decodeURIComponent(url.toString().toLowerCase());
             const decodedTitle = decodeURIComponent(tab.title || '').toLowerCase();
             
             // 检查学习相关关键词
@@ -699,12 +732,19 @@ function determineCategory(tab) {
                 'education', 'study', 'training', 'lesson', 'programming',
                 'development', 'coding', 'basics', 'introduction', 'davinci resolve',
                 'video editing', 'anytype', 'notion alternative', 'web design',
-                'html', 'css',
+                'html', 'css', 'features', 'banned', 'what to do', 'how to make',
+                'make money', 'earn money', 'complete guide', 'full guide',
+                'tips and tricks', 'master class', 'masterclass', 'step by step',
+                'beginner', 'advanced', 'pro tips', 'tutorial', 'complete tutorial',
+                'vip', 'premium', 'capcut', 'filmora',
                 // 中文关键词
                 '教學', '課程', '學習', '指南', '教程', '入門', '新手',
                 '實戰', '程式', '開發', '編程', '教育', '基礎', '進階',
                 '完整課程', '從零開始', '詳解', '講解', '上手', '快速上手',
-                '剪輯軟體', '影片剪輯', '筆記工具', '網頁設計', '前端開發'
+                '剪輯軟體', '影片剪輯', '筆記工具', '網頁設計', '前端開發',
+                '使用教學', '完美使用', '功能使用', '大全', '賺錢', '賺到',
+                '如何使用', '永久使用', '破解', 'vip功能', '剪映', '教程',
+                '完整版', '進階版', '專業版', '完美版'
             ];
             
             // 如果标题或 URL 包含学习关键词，归类为学习
@@ -888,7 +928,34 @@ async function updateStats() {
 function updateGroups() {
     Object.entries(tabsData).forEach(([group, tabs]) => {
         const groupElement = document.getElementById(`${group}Group`);
-        if (!groupElement) return;
+        if (!groupElement) {
+            console.log(`Creating missing group element for ${group}`);
+            // 如果搜索分類的元素不存在，創建它
+            if (group === 'search') {
+                const container = document.querySelector('.groups-container');
+                const searchGroup = document.createElement('div');
+                searchGroup.id = 'searchGroup';
+                searchGroup.className = 'group';
+                searchGroup.innerHTML = `
+                    <div class="group-header">
+                        <h3>${isEnglish ? 'Search' : '搜索'}</h3>
+                        <span class="tab-count">0</span>
+                        <button class="collapse-btn">▼</button>
+                    </div>
+                    <div class="group-content"></div>
+                `;
+                // 將搜索分類插入到最前面
+                if (container.firstChild) {
+                    container.insertBefore(searchGroup, container.firstChild);
+                } else {
+                    container.appendChild(searchGroup);
+                }
+                // 為新創建的折疊按鈕添加事件監聽器
+                searchGroup.querySelector('.collapse-btn').addEventListener('click', handleCollapse);
+                return;
+            }
+            return;
+        }
 
         // 如果分類中沒有標籤頁，則隱藏整個分組
         groupElement.style.display = tabs.length === 0 ? 'none' : 'block';
@@ -1133,6 +1200,7 @@ function updateLanguageTexts() {
     
     // 更新分组标题
     const groupTitles = {
+        'searchGroup': ['Search', '搜索'],
         'politicsGroup': ['Politics', '政治'],
         'aiGroup': ['AI Tools', 'AI 工具'],
         'socialGroup': ['Social Media', '社交媒體'],
