@@ -1,5 +1,138 @@
 // 標籤分類規則
 const CATEGORY_RULES = {
+    SEARCH: {
+        domains: [
+            'google.com/search',
+            'google.com.tw/search',
+            'bing.com/search',
+            'search.yahoo.com',
+            'duckduckgo.com',
+            'baidu.com/s',
+            'yandex.com/search',
+            'ecosia.org/search',
+            'search.brave.com',
+            'scholar.google.com',  // 學術搜索
+            'images.google.com',   // 圖片搜索
+            'maps.google.com/search'  // 地圖搜索
+        ],
+        keywords: [
+            'search',
+            'query',
+            'find',
+            'lookup',
+            'search engine',
+            'search result',
+            'advanced search',
+            'image search',
+            'web search',
+            'search filter',
+            'search tools',
+            '搜尋',
+            '搜索',
+            '查詢',
+            '尋找',
+            '檢索',
+            '搜尋引擎',
+            '搜尋結果',
+            '進階搜尋',
+            '圖片搜尋',
+            '網頁搜尋',
+            '搜尋工具'
+        ],
+        nlpPatterns: [
+            'search for',
+            'looking for',
+            'how to find',
+            'where to find',
+            'search results for',
+            'advanced search options',
+            'search filters',
+            'custom search',
+            '搜尋結果',
+            '進階搜尋選項',
+            '搜尋過濾',
+            '自訂搜尋',
+            '搜尋工具'
+        ]
+    },
+    POLITICS: {
+        domains: [
+            'congress.gov/bill',  // 法案相關
+            'whitehouse.gov/briefing-room',  // 白宮簡報室
+            'un.org/press',  // 聯合國新聞
+            'parliament.uk/business',  // 議會事務
+            'legco.gov.hk/yr*',  // 立法會年度資料
+            'npc.gov.cn/npc',  // 人大新聞
+            'senate.gov',  // 參議院
+            'house.gov'  // 眾議院
+        ],
+        keywords: [
+            'election',
+            'democracy',
+            'parliament',
+            'congress',
+            'legislation',
+            'diplomatic',
+            'minister',
+            'president',
+            'senator',
+            'political',
+            'protest',
+            'activism',
+            'referendum',
+            'campaign',
+            'ballot',
+            'vote',
+            'opposition',
+            'ruling party',
+            'sanctions',
+            'impeachment',
+            '選舉',
+            '民主',
+            '國會',
+            '立法',
+            '外交',
+            '部長',
+            '總統',
+            '議員',
+            '示威',
+            '抗議',
+            '公投',
+            '執政',
+            '在野',
+            '政黨',
+            '制裁',
+            '彈劾',
+            '政見',
+            '政策辯論'
+        ],
+        nlpPatterns: [
+            'political debate',
+            'election campaign',
+            'democratic movement',
+            'protest march',
+            'legislative session',
+            'diplomatic crisis',
+            'political reform',
+            'parliamentary debate',
+            'presidential election',
+            'opposition party',
+            'political controversy',
+            'policy debate',
+            '政治辯論',
+            '選舉活動',
+            '民主運動',
+            '示威遊行',
+            '立法會議',
+            '外交危機',
+            '政治改革',
+            '國會辯論',
+            '總統大選',
+            '在野黨',
+            '政治爭議',
+            '政策討論'
+        ]
+    },
     AI: {
         domains: [
             'chat.openai.com',
@@ -10,7 +143,8 @@ const CATEGORY_RULES = {
             'leonardo.ai',
             'x.ai',
             'grok.x.ai',
-            'twitter.com/grok',
+            'x.com/i/grok',
+            'twitter.com/i/grok',
             'bard.google.com',
             'huggingface.co',
             'stability.ai',
@@ -113,7 +247,8 @@ const CATEGORY_RULES = {
             'canva.com',
             'figma.com',
             'photopea.com',
-            'draw.io'
+            'draw.io',
+            'github.com'
         ],
         keywords: [
             'tool',
@@ -238,15 +373,24 @@ const CATEGORY_RULES = {
             'edx.org',
             'w3schools.com',
             'developer.mozilla.org',
-            'github.com',
             'stackoverflow.com',
+            'leetcode.com',
+            'leetcode.cn',
+            'hackerrank.com',
+            'codewars.com',
             'youtube.com/.*tutorial',
             'youtube.com/.*course',
             'youtube.com/.*learn',
             'youtube.com/.*教學',
-            'youtube.com/.*課程'
+            'youtube.com/.*課程',
+            'youtube.com/.*上手',
+            'freecodecamp.org',
+            'codecademy.com',
+            'pluralsight.com',
+            'linkedin.com/learning'
         ],
         keywords: [
+            // 通用學習關鍵字
             'tutorial',
             'course',
             'learn',
@@ -257,9 +401,44 @@ const CATEGORY_RULES = {
             'study',
             'training',
             'lesson',
+            
+            // 技術和工具學習
             'programming',
             'development',
             'coding',
+            'web design',
+            'html',
+            'css',
+            'javascript',
+            'python',
+            'react',
+            'angular',
+            'vue',
+            'node.js',
+            'database',
+            'api',
+            'framework',
+            'leetcode',
+            'coding challenge',
+            'algorithm',
+            'data structure',
+            
+            // 軟體和工具教學
+            'software tutorial',
+            'tool tutorial',
+            'davinci resolve',
+            'video editing',
+            'editing software',
+            'note taking',
+            'notion alternative',
+            'anytype',
+            'productivity app',
+            'offline support',
+            'privacy focused',
+            'decentralized',
+            'self hosted',
+            
+            // 中文關鍵字
             '教學',
             '課程',
             '學習',
@@ -268,26 +447,43 @@ const CATEGORY_RULES = {
             '入門',
             '新手',
             '實戰',
-            '程式',
-            '開發',
-            '編程',
-            '程式設計',
-            '軟體開發',
-            '計算機',
-            '電腦'
+            '上手',
+            '快速上手',
+            '剪輯軟體',
+            '影片剪輯',
+            '視頻剪輯',
+            '筆記工具',
+            '筆記應用',
+            '效率工具',
+            '替代方案',
+            '去中心化',
+            '私隱保護',
+            '離線使用',
+            '自主託管',
+            '算法',
+            '數據結構',
+            '編程題',
+            '刷題',
+            '網頁設計',
+            '前端開發'
         ],
         nlpPatterns: [
-            'how to',
-            'tutorial',
-            'guide',
-            'basics',
-            'introduction',
-            'getting started',
+            // 英文模式
+            'how to use',
+            'getting started with',
+            'quick start guide',
+            'beginners guide',
             'step by step',
-            'complete course',
-            'full course',
-            'for beginners',
-            'crash course',
+            'tutorial for',
+            'introduction to',
+            'alternative to',
+            'versus',
+            'comparison',
+            'review of',
+            'features of',
+            'hands on',
+            
+            // 中文模式
             '如何使用',
             '快速上手',
             '入門教學',
@@ -295,9 +491,12 @@ const CATEGORY_RULES = {
             '實戰教學',
             '從零開始',
             '基礎教程',
-            '進階教學',
             '詳細講解',
-            '完整課程'
+            '功能介紹',
+            '軟體教學',
+            '工具介紹',
+            '替代方案',
+            '對比分析'
         ]
     },
     WORK: {
@@ -379,6 +578,8 @@ const CATEGORY_RULES = {
 
 // 標籤數據存儲
 let tabsData = {
+    search: [],  // 添加搜索分類
+    politics: [],
     ai: [],
     social: [],
     tools: [],
@@ -435,6 +636,8 @@ async function loadTabs() {
 // 分類標籤
 function categorizeTabs(tabs) {
     tabsData = {
+        search: [],
+        politics: [],
         ai: [],
         social: [],
         tools: [],
@@ -473,28 +676,14 @@ function determineCategory(tab) {
         domain = url.hostname.toLowerCase();
         pathname = decodeURIComponent(url.pathname).toLowerCase();
         const fullUrl = url.toString().toLowerCase();
+        const searchParams = url.searchParams;
         
-        // AI 工具的特殊 URL 匹配
-        if (domain.includes('chat.openai.com') || 
-            domain.includes('chatgpt.com') ||
-            domain.includes('claude.ai') ||
-            domain.includes('bard.google.com') ||
-            domain.includes('x.com/i/grok') ||
-            domain.includes('grok.x.ai') ||
-            domain.includes('deepseek.com') ||
-            domain.includes('anthropic.com') ||
-            domain.includes('huggingface.co') ||
-            domain.includes('stability.ai') ||
-            domain.includes('midjourney.com') ||
-            domain.includes('leonardo.ai')) {
-            return 'ai';
-        }
-        
-        // 特殊處理 Google 搜索頁面
-        if (domain.includes('google.com') || domain.includes('google.com.tw')) {
-            if (url.pathname === '/search' || url.pathname === '/') {
-                return 'other';
-            }
+        // 搜索引擎域名匹配
+        if (domain.includes('google.com') || 
+            domain.includes('bing.com') || 
+            domain.includes('yahoo.com') || 
+            domain.includes('duckduckgo.com')) {
+            return 'search';
         }
         
         // 特殊處理 YouTube 的內容
@@ -508,11 +697,14 @@ function determineCategory(tab) {
                 // 英文关键词
                 'tutorial', 'course', 'learn', 'learning', 'guide', 'how to',
                 'education', 'study', 'training', 'lesson', 'programming',
-                'development', 'coding', 'basics', 'introduction',
+                'development', 'coding', 'basics', 'introduction', 'davinci resolve',
+                'video editing', 'anytype', 'notion alternative', 'web design',
+                'html', 'css',
                 // 中文关键词
                 '教學', '課程', '學習', '指南', '教程', '入門', '新手',
                 '實戰', '程式', '開發', '編程', '教育', '基礎', '進階',
-                '完整課程', '從零開始', '詳解', '講解'
+                '完整課程', '從零開始', '詳解', '講解', '上手', '快速上手',
+                '剪輯軟體', '影片剪輯', '筆記工具', '網頁設計', '前端開發'
             ];
             
             // 如果标题或 URL 包含学习关键词，归类为学习
@@ -525,7 +717,23 @@ function determineCategory(tab) {
             return 'entertainment';
         }
         
-        // 检查域名匹配
+        // AI 工具的特殊 URL 匹配
+        if (domain.includes('chat.openai.com') || 
+            domain.includes('chatgpt.com') ||
+            domain.includes('claude.ai') ||
+            domain.includes('bard.google.com') ||
+            (domain.includes('x.com') && pathname.startsWith('/i/grok')) ||
+            (domain.includes('twitter.com') && pathname.startsWith('/i/grok')) ||
+            domain.includes('deepseek.com') ||
+            domain.includes('anthropic.com') ||
+            domain.includes('huggingface.co') ||
+            domain.includes('stability.ai') ||
+            domain.includes('midjourney.com') ||
+            domain.includes('leonardo.ai')) {
+            return 'ai';
+        }
+        
+        // 檢查其他分類的域名匹配
         for (const [category, rules] of Object.entries(CATEGORY_RULES)) {
             // 域名精确匹配
             if (rules.domains.some(d => {
@@ -678,15 +886,20 @@ async function updateStats() {
 
 // 更新分組
 function updateGroups() {
-    Object.keys(tabsData).forEach(group => {
+    Object.entries(tabsData).forEach(([group, tabs]) => {
         const groupElement = document.getElementById(`${group}Group`);
+        if (!groupElement) return;
+
+        // 如果分類中沒有標籤頁，則隱藏整個分組
+        groupElement.style.display = tabs.length === 0 ? 'none' : 'block';
+
         const content = groupElement.querySelector('.group-content');
         const count = groupElement.querySelector('.tab-count');
 
         content.innerHTML = '';
-        count.textContent = tabsData[group].length;
+        count.textContent = tabs.length;
 
-        tabsData[group].forEach(tab => {
+        tabs.forEach(tab => {
             content.appendChild(createTabElement(tab));
         });
     });
@@ -920,6 +1133,7 @@ function updateLanguageTexts() {
     
     // 更新分组标题
     const groupTitles = {
+        'politicsGroup': ['Politics', '政治'],
         'aiGroup': ['AI Tools', 'AI 工具'],
         'socialGroup': ['Social Media', '社交媒體'],
         'toolsGroup': ['Tools', '工具'],
@@ -933,8 +1147,10 @@ function updateLanguageTexts() {
     };
 
     Object.entries(groupTitles).forEach(([id, [en, zh]]) => {
-        const header = document.getElementById(id).querySelector('h3');
-        header.textContent = isEnglish ? en : zh;
+        const header = document.getElementById(id)?.querySelector('h3');
+        if (header) {
+            header.textContent = isEnglish ? en : zh;
+        }
     });
 
     // 更新建议标题和内容
